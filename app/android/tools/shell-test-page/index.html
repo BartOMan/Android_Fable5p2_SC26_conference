@@ -1,0 +1,130 @@
+<!doctype html>
+<!-- PLACEHOLDER: test page for the Android shell (app/android). Replace with the real web app. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SC26 Atlas shell test</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #0B1020; color: #E2E8F0; font: 14px/1.4 system-ui, sans-serif; }
+  body {
+    /* --sat / --sab are set by the native shell; env() is the fallback in a plain browser. */
+    padding: calc(var(--sat, env(safe-area-inset-top, 0px)) + 12px) 14px
+             calc(var(--sab, env(safe-area-inset-bottom, 0px)) + 12px);
+  }
+  h1 { font-size: 18px; margin: 0 0 10px; color: #22D3EE; }
+  dl { margin: 0 0 12px; }
+  dt { color: #818CF8; font-size: 12px; margin-top: 8px; }
+  dd { margin: 2px 0 0; word-break: break-word; }
+  .buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  button, a.btn {
+    display: block; padding: 10px 8px; border: 1px solid #334155; border-radius: 8px;
+    background: #151B33; color: #E2E8F0; font: inherit; text-align: center; text-decoration: none;
+  }
+  button:active { background: #1E2A52; }
+  #log { margin-top: 12px; padding: 8px; min-height: 3em; border-radius: 8px; background: #060914;
+         color: #C084FC; font: 12px/1.4 ui-monospace, monospace; white-space: pre-wrap; }
+  #probe { position: fixed; visibility: hidden; padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px); }
+</style>
+</head>
+<body>
+<h1>SC26 Atlas shell test</h1>
+<dl>
+  <dt>User agent</dt><dd id="ua"></dd>
+  <dt>fetch('data/test.json')</dt><dd id="fetch">loading...</dd>
+  <dt>Launch counter (localStorage)</dt><dd id="count"></dd>
+  <dt>Insets</dt><dd id="insets"></dd>
+  <dt>window.__sc26Open(id)</dt><dd id="open">not called</dd>
+</dl>
+
+<div class="buttons">
+  <button id="b-share">share</button>
+  <button id="b-shareFile">shareFile (.ics)</button>
+  <button id="b-calendar">addCalendarEvent</button>
+  <button id="b-openExternal">openExternal</button>
+  <button id="b-schedule">scheduleReminder (+20 s)</button>
+  <button id="b-cancel">cancelReminder</button>
+  <button id="b-allowed">notificationsAllowed</button>
+  <button id="b-version">appVersion</button>
+  <button id="b-haptic">haptic</button>
+  <button id="b-trap">trap back (once)</button>
+  <a class="btn" id="a-https" href="https://example.com/">https link</a>
+  <a class="btn" id="a-blank" href="https://example.org/" target="_blank">target=_blank link</a>
+  <a class="btn" id="a-mailto" href="mailto:test@example.com?subject=SC26">mailto link</a>
+  <a class="btn" id="a-geo" href="geo:41.8826,-87.6233?q=McCormick+Place">geo link</a>
+</div>
+<div id="probe"></div>
+<div id="log"></div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const log = (msg) => { $('log').textContent = msg + '\n' + $('log').textContent; };
+  const bridge = () => window.AndroidBridge;
+  const call = (name, ...args) => {
+    if (!bridge()) { log(name + ': window.AndroidBridge is not available'); return undefined; }
+    const result = bridge()[name](...args);
+    log(name + '(' + args.map((a) => JSON.stringify(a)).join(', ').slice(0, 80) + ') -> ' + JSON.stringify(result));
+    return result;
+  };
+
+  $('ua').textContent = navigator.userAgent;
+
+  fetch('data/test.json')
+    .then((r) => r.json().then((j) => r.status + ' ' + r.headers.get('content-type') + ' ' + JSON.stringify(j)))
+    .catch((e) => 'FAILED: ' + e)
+    .then((text) => { $('fetch').textContent = text; });
+
+  const launches = (parseInt(localStorage.getItem('sc26.launches'), 10) || 0) + 1;
+  localStorage.setItem('sc26.launches', String(launches));
+  $('count').textContent = String(launches);
+
+  const showInsets = () => {
+    const root = getComputedStyle(document.documentElement);
+    const probe = getComputedStyle($('probe'));
+    $('insets').textContent =
+      '--sat: ' + (root.getPropertyValue('--sat').trim() || 'unset') +
+      ', --sab: ' + (root.getPropertyValue('--sab').trim() || 'unset') +
+      ' | env(safe-area-inset-top/bottom): ' + probe.paddingTop + ' / ' + probe.paddingBottom +
+      ' | viewport ' + innerWidth + 'x' + innerHeight;
+  };
+  showInsets();
+  setInterval(showInsets, 500);
+
+  // Contract with the native shell.
+  let trapBack = false;
+  window.__sc26Back = () => {
+    if (!trapBack) return false;      // not handled: the shell finishes the activity
+    trapBack = false;
+    log('__sc26Back: handled by the page');
+    return true;
+  };
+  window.__sc26Open = (id) => {
+    $('open').textContent = 'called with id ' + JSON.stringify(id);
+    log('__sc26Open(' + JSON.stringify(id) + ')');
+  };
+
+  const ics = () => [
+    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//SC26 Atlas//shell test//EN', 'BEGIN:VEVENT',
+    'UID:shell-test@sc26atlas', 'DTSTAMP:20261118T000000Z', 'DTSTART:20261118T150000Z',
+    'DTEND:20261118T160000Z', 'SUMMARY:SC26 shell test event', 'LOCATION:Room 101', 'END:VEVENT',
+    'END:VCALENDAR', ''].join('\r\n');
+
+  $('b-share').onclick = () => call('share', 'SC26 Atlas', 'Shared from the shell test page');
+  $('b-shareFile').onclick = () => call('shareFile', 'sc26-test.ics', 'text/calendar', ics());
+  $('b-calendar').onclick = () => {
+    const start = Date.now() + 3600e3;
+    call('addCalendarEvent', 'SC26 shell test', start, String(start + 1800e3), 'Room 101', 'Created by the test page');
+  };
+  $('b-openExternal').onclick = () => call('openExternal', 'https://example.com/?from=openExternal');
+  $('b-schedule').onclick = () =>
+    call('scheduleReminder', 'test-1', 'Session reminder', 'Shell test reminder (id test-1)', Date.now() + 20e3);
+  $('b-cancel').onclick = () => call('cancelReminder', 'test-1');
+  $('b-allowed').onclick = () => call('notificationsAllowed');
+  $('b-version').onclick = () => call('appVersion');
+  $('b-haptic').onclick = () => call('haptic');
+  $('b-trap').onclick = () => { trapBack = true; log('next back press will be handled by the page'); };
+</script>
+</body>
+</html>

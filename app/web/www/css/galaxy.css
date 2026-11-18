@@ -1,0 +1,117 @@
+/* SC26 Atlas: topic galaxy styles. Every class here starts with gx-. */
+.gx-root { position: absolute; inset: 0; overflow: hidden; background: #070A16; }
+.gx-root [hidden] { display: none !important; }
+.gx-canvas { position: absolute; inset: 0; width: 100%; height: 100%; outline: none; }
+.gx-none { padding-top: 40px; }
+
+/* ------------------------------------------------- top: filters and modes */
+.gx-top { padding: 10px 0 16px; pointer-events: none; background: linear-gradient(180deg, rgba(6, 9, 20, .95) 0%, rgba(6, 9, 20, .8) 58%, rgba(6, 9, 20, 0) 100%); }
+.gx-top > * { pointer-events: auto; }
+.gx-filters { margin: 0; padding: 2px 12px; align-items: center; scroll-padding: 0 12px; }
+.gx-chips { display: contents; }
+.gx-filters .chip { flex: none; background: rgba(26, 36, 73, .92); border-color: var(--line2); }
+.gx-filters .chip.tinted { background: color-mix(in srgb, var(--c) 16%, rgba(14, 20, 44, .95)); }
+.gx-filters .chip.on { background: var(--acc); border-color: transparent; }
+.gx-filters .chip.tinted.on { background: var(--c); }
+.gx-planchip.on { background: var(--gold) !important; }
+.gx-planchip.on .ic { fill: #071022; }
+.gx-sep { flex: none; width: 1px; height: 20px; margin: 0 2px; background: var(--line2); }
+
+.gx-search { flex: none; display: flex; align-items: center; gap: 6px; width: 112px; height: 34px; padding: 0 10px 0 11px; border-radius: var(--r3); background: rgba(26, 36, 73, .92); border: 1px solid var(--line2); color: var(--tx3); transition: width .18s ease, border-color .12s; }
+.gx-search:focus-within, .gx-search.has { width: 190px; }
+.gx-search:focus-within { border-color: var(--acc2); box-shadow: 0 0 0 3px rgba(129, 140, 248, .18); }
+.gx-search.has { color: var(--acc); }
+.gx-search > .ic { width: 15px; height: 15px; }
+.gx-search input { flex: 1; min-width: 0; height: 100%; padding: 0; background: none; border: 0; outline: 0; font-size: 13.5px; color: var(--tx); user-select: text; -webkit-user-select: text; }
+.gx-search input::placeholder { color: var(--tx2); opacity: 1; }
+.gx-qx { position: relative; flex: none; width: 24px; height: 24px; margin-right: -5px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: var(--tx2); background: var(--line); }
+.gx-qx::after { content: ""; position: absolute; inset: -8px; }
+.gx-qx .ic { width: 13px; height: 13px; }
+
+.gx-row2 { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 12px 0; pointer-events: none; }
+.gx-row2 > * { pointer-events: auto; }
+.gx-seg { display: inline-flex; flex: none; background: rgba(17, 24, 52, .94); border-color: var(--line2); }
+.gx-seg button { flex: none; height: 34px; padding: 0 11px; font-size: 13px; }
+.gx-seg button.on { background: var(--card3); box-shadow: 0 1px 0 rgba(255, 255, 255, .1) inset, 0 0 0 1px rgba(129, 140, 248, .35); }
+.gx-count { flex: none; height: 28px; padding: 0 10px; display: inline-flex; align-items: center; gap: 4px; border-radius: 14px; background: rgba(8, 12, 28, .78); border: 1px solid var(--line); font-size: 12px; color: var(--tx2); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.gx-count b { color: var(--tx); font-weight: 700; font-size: 13px; }
+
+/* --------------------------------------- bottom: key, tools, selected card */
+.gx-bottom { position: absolute; left: 12px; right: 12px; bottom: 12px; z-index: 9; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+.gx-bottom > * { pointer-events: auto; }
+.gx-cardslot:empty { display: none; }
+
+.gx-key { margin: 0 -12px; padding: 0 12px; gap: 14px; align-items: center; font-size: 11.5px; color: var(--tx2); text-shadow: 0 1px 3px #060813, 0 0 8px #060813; }
+.gx-key span { display: inline-flex; align-items: center; white-space: nowrap; }
+.gx-key i { width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; background: var(--c); box-shadow: 0 0 6px var(--c); }
+.gx-key .gx-ramp { width: 96px; height: 6px; border-radius: 3px; }
+
+.gx-tools { display: flex; align-items: center; justify-content: space-between; gap: 10px; pointer-events: none; }
+.gx-tools > * { pointer-events: auto; }
+.gx-pill { display: inline-flex; align-items: center; min-width: 0; height: 40px; border-radius: 20px; overflow: hidden; background: rgba(17, 24, 52, .95); border: 1px solid var(--line2); box-shadow: 0 4px 16px rgba(0, 0, 0, .4); color: var(--tx); font-size: 13.5px; font-weight: 620; }
+.gx-pill.on { border-color: color-mix(in srgb, var(--c) 60%, transparent); }
+.gx-pill-main { display: inline-flex; align-items: center; gap: 9px; min-width: 0; height: 100%; padding: 0 15px 0 13px; }
+.gx-pill-main span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gx-pill-main:active, .gx-pill-x:active, .gx-reset:active { background: var(--line); }
+.gx-pill-x { flex: none; width: 40px; height: 100%; display: inline-flex; align-items: center; justify-content: center; color: var(--tx2); border-left: 1px solid var(--line2); }
+.gx-pill-x .ic { width: 16px; height: 16px; }
+.gx-dot { flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); }
+.gx-dots { display: inline-flex; flex: none; padding-left: 3px; }
+.gx-dots i { width: 10px; height: 10px; margin-left: -3px; border-radius: 50%; box-shadow: 0 0 0 1.5px #111834; }
+.gx-reset { flex: none; gap: 7px; padding: 0 14px 0 11px; color: var(--tx2); }
+.gx-reset .ic { width: 17px; height: 17px; }
+
+.gx-hint { display: flex; align-items: center; gap: 12px; padding: 12px 12px 12px 14px; border-radius: var(--r); background: rgba(17, 24, 52, .96); border: 1px solid rgba(192, 132, 252, .4); box-shadow: var(--shadow); }
+.gx-hint > div { flex: 1; min-width: 0; }
+.gx-hint b { display: block; font-size: 14px; }
+.gx-hint span { display: block; margin-top: 1px; font-size: 12.5px; line-height: 1.35; color: var(--tx2); }
+.gx-hintbtn { flex: none; height: 40px; padding: 0 13px; font-size: 13.5px; border-radius: 12px; gap: 6px; }
+.gx-hintbtn .ic { width: 16px; height: 16px; }
+
+/* The shared overlay-card blurs what is behind it. Over a canvas that redraws every frame that is costly, so it is solid here. */
+.gx-bottom .overlay-card.gx-card { position: relative; left: auto; right: auto; bottom: auto; padding: 8px 8px 10px 16px; overflow: hidden; background: rgba(17, 24, 52, .97); backdrop-filter: none; -webkit-backdrop-filter: none; }
+.gx-card.gx-new { animation: gx-rise .2s ease-out; }
+.gx-card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--c); }
+.gx-card-head { display: flex; align-items: center; gap: 6px; min-height: 36px; }
+.gx-card-head .it-meta { flex: 1; min-width: 0; margin: 0; }
+.gx-card-x { width: 36px; height: 36px; color: var(--tx3); }
+.gx-card-x .ic { width: 18px; height: 18px; }
+.gx-card-title { margin: 2px 8px 0 0; font-size: 15.5px; font-weight: 650; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.gx-card-sim { margin: 5px 8px 0 0; font-size: 12px; color: var(--tx3); }
+.gx-card-foot { display: flex; align-items: center; gap: 4px; margin-top: 6px; }
+.gx-card-loc { flex: 1; min-width: 0; display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--tx); }
+.gx-card-loc .ic { flex: none; width: 15px; height: 15px; color: var(--c); }
+.gx-card-loc span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gx-open { flex: none; height: 40px; padding: 0 10px 0 16px; margin-right: 4px; gap: 2px; font-size: 14px; border-radius: 12px; }
+.gx-open .ic { width: 17px; height: 17px; }
+@keyframes gx-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* While the galaxy is open the shared toast shows under the filters instead of over the talk card. */
+body.gx-on #toast { bottom: auto; top: calc(var(--top-h) + var(--sat) + 116px); transform: translate(-50%, -14px); }
+body.gx-on #toast.show { transform: translate(-50%, 0); }
+
+/* ------------------------------------------------- sheets: formats, themes */
+.gx-sheetnote { margin: 0 2px 8px; }
+.gx-list { display: flex; flex-direction: column; }
+.gx-opt { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 46px; padding: 6px 6px; text-align: left; border-bottom: 1px solid var(--line); border-radius: 0; font-size: 14.5px; }
+.gx-opt:last-child { border-bottom: 0; }
+.gx-opt:active { background: var(--line); }
+.gx-opt i { flex: none; width: 12px; height: 12px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px color-mix(in srgb, var(--c) 70%, transparent); }
+.gx-opt span { flex: 1; min-width: 0; line-height: 1.25; }
+.gx-opt b { flex: none; min-width: 34px; text-align: right; font-size: 13px; font-weight: 650; color: var(--tx2); font-variant-numeric: tabular-nums; }
+.gx-opt.on span { color: var(--acc); font-weight: 700; }
+.gx-opt.on b { color: var(--acc); }
+
+/* --------------------------------------------- landscape and short screens */
+@media (max-height: 520px) and (orientation: landscape) {
+  /* buttons and color key at the left, the talk card at the right, so nothing reaches up into the filters */
+  .gx-bottom { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 380px); grid-template-rows: 1fr auto; gap: 8px 12px; align-items: end; }
+  .gx-key { grid-column: 1; grid-row: 1; margin-right: 0; }
+  .gx-tools { grid-column: 1; grid-row: 2; justify-content: flex-start; }
+  .gx-cardslot, .gx-hint { grid-column: 2; grid-row: 1 / span 2; }
+  .gx-card-title { -webkit-line-clamp: 2; }
+}
+@media (max-width: 374px) {
+  .gx-seg button { padding: 0 9px; }
+  .gx-search { width: 104px; }
+}

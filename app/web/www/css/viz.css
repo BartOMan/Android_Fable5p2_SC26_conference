@@ -1,0 +1,152 @@
+/* SC26 Atlas: viz view styles (js/views/charts.js). Every class is prefixed vz-.
+   The view root carries .vz so motion can be switched off in one place. */
+
+/* ----------------------------------------------------------- shared bits */
+.vz-cap { margin: 8px 2px 0; }
+.vz .card > .note { margin-top: 10px; }
+.vz-links { margin-top: 14px; }
+.vz-links .tile { min-height: 84px; }
+
+.vz-barrow { grid-template-columns: minmax(0, 52%) 1fr auto; min-height: 40px; border-radius: 8px; cursor: pointer; }
+.vz-barrow > span:first-child { white-space: normal; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.vz-barrow:active { background: var(--line); }
+.vz-barrow .track i { transform-origin: left center; animation: vz-growx .6s cubic-bezier(.2, .8, .2, 1) backwards; }
+@keyframes vz-growx { from { transform: scaleX(0); } }
+@keyframes vz-fade { from { opacity: 0; } }
+@keyframes vz-up { from { opacity: 0; transform: translateY(8px); } }
+
+/* one whole split into parts: 2px surface gap between segments, rounded ends */
+.vz-stack { display: flex; gap: 2px; width: 100%; height: 16px; border-radius: 5px; overflow: hidden; }
+.vz-stack i { display: block; flex: 0 0 0; min-width: 2px; height: 100%; }
+.vz-wipe { animation: vz-wipe .7s cubic-bezier(.2, .8, .2, 1) backwards; }
+@keyframes vz-wipe { from { clip-path: inset(0 100% 0 0 round 5px); } to { clip-path: inset(0 0 0 0 round 5px); } }
+.vz-legend { margin-top: 12px; gap: 7px 14px; }
+.vz-legend span { white-space: nowrap; }
+.vz-legend b { color: var(--tx); font-weight: 650; font-variant-numeric: tabular-nums; }
+
+/* ------------------------------------------------------ themes: block map */
+.vz-map { padding: 6px; min-height: 200px; }
+.vz-map svg { display: block; width: 100%; height: auto; max-width: 532px; margin: 0 auto; touch-action: manipulation; }
+.vz-blk { cursor: pointer; }
+.vz-blk-in { transform-box: fill-box; transform-origin: center; animation: vz-pop .5s cubic-bezier(.2, 1.15, .35, 1) backwards; }
+.vz-blk rect { fill-opacity: .93; transition: fill-opacity .12s; }
+.vz-blk:active rect { fill-opacity: .6; }
+.vz-blk text { pointer-events: none; font-weight: 650; }
+.vz-blk text, .vz-blk tspan { dominant-baseline: central; }
+.vz-blk .vz-blk-n { font-weight: 600; opacity: .72; font-variant-numeric: tabular-nums; }
+@keyframes vz-pop { from { transform: scale(.25); opacity: 0; } }
+
+/* ------------------------------------------------- theme and tag detail */
+.vz-head { position: relative; overflow: hidden; border-color: color-mix(in srgb, var(--c) 42%, transparent);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--c) 24%, transparent), transparent 72%), var(--card); }
+.vz-head-kind { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 650; letter-spacing: .3px; text-transform: uppercase; color: var(--tx2); }
+.vz-head-kind i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); box-shadow: 0 0 12px var(--c); flex: none; }
+.vz-head-name { font-size: 21px; font-weight: 800; line-height: 1.2; letter-spacing: -.2px; margin: 8px 0 6px; }
+.vz-head-count { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 7px; margin-bottom: 14px; color: var(--tx2); font-size: 13.5px; }
+.vz-head-count b { font-size: 30px; font-weight: 800; line-height: 1.1; color: var(--tx); }
+.vz-head .btnrow .btn { flex: 1 1 auto; white-space: nowrap; padding: 0 12px; }
+.vz-int.is-on { background: color-mix(in srgb, var(--c) 22%, var(--card3)); border-color: color-mix(in srgb, var(--c) 60%, transparent); }
+.vz-int.is-on .ic { color: var(--ok); }
+
+.vz-when { padding: 12px 12px 12px; --c1: 54px; --c3: 30px; }
+.vz-when-head, .vz-when-row { display: grid; grid-template-columns: var(--c1) minmax(0, 1fr) var(--c3); align-items: center; gap: 8px; width: 100%; padding: 0 6px; }
+.vz-when-hours, .vz-when-cells { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 3px; }
+.vz-when-hours i { font-style: normal; font-size: 10.5px; color: var(--tx3); white-space: nowrap; overflow: visible; width: 0; }
+.vz-when-head { margin-bottom: 2px; }
+.vz-when-row { min-height: 40px; border-radius: 10px; text-align: left; transition: background .12s; }
+.vz-when-row:active { background: var(--line); }
+.vz-when-row.on { background: rgba(255, 255, 255, .07); box-shadow: inset 0 0 0 1px var(--line2); }
+.vz-when-row.dim .vz-when-cells { opacity: .4; }
+.vz-when-day { font-size: 12.5px; color: var(--tx2); white-space: nowrap; }
+.vz-when-day b { color: var(--tx); font-weight: 650; }
+.vz-when-row.today .vz-when-day b { color: var(--ok); }
+.vz-when-cells i { display: block; height: 26px; border-radius: 5px; background: rgba(255, 255, 255, .045); animation: vz-fade .45s ease-out backwards; }
+.vz-when-n { font-size: 12.5px; font-weight: 650; text-align: right; color: var(--tx2); font-variant-numeric: tabular-nums; }
+
+.vz-chips .chip { max-width: 100%; }
+.vz-chips .chip span { overflow: hidden; text-overflow: ellipsis; }
+.vz-people .row-sub { white-space: normal; }
+.vz-people .vz-l1 { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vz-people .vz-l2 { display: block; color: var(--tx3); font-size: 12.3px; line-height: 1.3; }
+.vz-daychips { margin-bottom: 10px; }
+.vz-subhead { display: flex; align-items: baseline; gap: 8px; margin: 14px 2px 8px; font-size: 12px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--tx2); }
+.vz-subhead:first-child { margin-top: 2px; }
+.vz-subhead span { color: var(--tx3); font-weight: 600; }
+
+/* ---------------------------------------------------------------- heatmap */
+.vz-seg { margin-bottom: 8px; }
+.vz-seg button { flex: 1 1 auto; font-size: 13px; }
+.vz-hm-key { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 7px; margin: 10px 2px; font-size: 11.5px; color: var(--tx3); }
+.vz-hm-key i { width: 64px; height: 8px; border-radius: 4px; background: linear-gradient(90deg, rgba(34, 211, 238, .13), rgba(34, 211, 238, .95)); }
+.vz-hm-key em { font-style: normal; flex: 1 1 100%; color: var(--tx2); font-size: 12.3px; }
+.vz-hm { padding: 0 8px 8px; --cw: 34px; overflow: clip; }
+.vz-hm-row { display: grid; grid-template-columns: minmax(0, 1fr) repeat(6, var(--cw)); gap: 3px; align-items: stretch; margin-top: 3px; animation: vz-fade .4s ease-out backwards; }
+.vz-hm-head { position: sticky; top: -14px; z-index: 4; margin: 0 -8px; padding: 8px 8px 6px; background: var(--card); border-bottom: 1px solid var(--line); align-items: end; animation: none; }
+.vz-hm-corner { font-size: 11px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--tx3); padding-left: 2px; }
+.vz-hm-dayh { text-align: center; font-size: 11px; line-height: 1.15; color: var(--tx3); font-variant-numeric: tabular-nums; }
+.vz-hm-dayh b { display: block; font-size: 11.5px; color: var(--tx2); font-weight: 650; }
+.vz-hm-dayh.today b { color: var(--ok); }
+.vz-hm-name { display: flex; align-items: center; gap: 7px; min-height: 40px; padding: 3px 4px 3px 2px; font-size: 12.5px; line-height: 1.2; border-radius: 8px; min-width: 0; cursor: pointer; }
+.vz-hm-name:active { background: var(--line); }
+.vz-hm-name i { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.vz-hm-name span { min-width: 0; overflow-wrap: anywhere; }
+.vz-hm-cell { display: flex; align-items: center; justify-content: center; min-height: 40px; border-radius: 7px; font-size: 12px; font-weight: 650; color: var(--tx); font-variant-numeric: tabular-nums; transition: background .25s; }
+.vz-hm-cell.hi { color: #071022; }
+.vz-hm-cell.zero { background: rgba(255, 255, 255, .025); }
+button.vz-hm-cell:active { transform: scale(.92); }
+@media (max-width: 380px) { .vz-hm { --cw: 30px; } }
+
+/* ---------------------------------------------------------------- formats */
+.vz-donut { padding: 16px 14px 14px; }
+.vz-donut-box { position: relative; width: min(100%, 264px); margin: 0 auto; }
+.vz-donut-box svg { display: block; width: 100%; height: auto; touch-action: manipulation; }
+.vz-arc { cursor: pointer; transition: opacity .15s; }
+.vz-arc.dim { opacity: .28; }
+.vz-donut-mid { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; pointer-events: none; padding: 0 22%; }
+.vz-donut-mid b { font-size: 36px; font-weight: 800; line-height: 1.1; letter-spacing: -.5px; }
+.vz-donut-mid span { font-size: 12.3px; line-height: 1.3; color: var(--tx2); margin-top: 3px; }
+.vz-donut .note { text-align: center; }
+.vz-fmt-row { min-height: 54px; }
+.vz-fmt-row.sel { background: rgba(255, 255, 255, .06); border-radius: 10px; }
+.vz-sw { width: 14px; height: 14px; border-radius: 5px; flex: none; margin-left: 2px; }
+.vz-hours { padding-top: 8px; }
+.vz-hrow { display: grid; grid-template-columns: 50px minmax(0, 1fr) 46px; align-items: center; gap: 8px; min-height: 40px; border-radius: 8px; cursor: pointer; }
+.vz-hrow:active { background: var(--line); }
+.vz-hrow-day { font-size: 12.5px; color: var(--tx2); white-space: nowrap; }
+.vz-hrow-day b { color: var(--tx); font-weight: 650; }
+.vz-hrow-track { display: block; height: 16px; border-radius: 5px; background: rgba(255, 255, 255, .045); }
+.vz-hrow-fill { display: block; min-width: 6px; transform-origin: left center; animation: vz-growx .7s cubic-bezier(.2, .8, .2, 1) backwards; }
+.vz-hrow-n { font-size: 12.5px; font-weight: 650; text-align: right; color: var(--tx2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* ------------------------------------------------------------------ pulse */
+.vz-stats { margin-bottom: 14px; }
+.vz-stats .stat { padding: 12px 6px; }
+.vz-stats .stat b small { font-size: 12px; font-weight: 750; margin-left: 2px; }
+.vz-stats .stat span { display: block; line-height: 1.3; margin-top: 2px; }
+.vz-pulse { padding: 12px 12px 8px; margin-bottom: 10px; cursor: pointer; animation: vz-up .4s ease-out backwards; }
+.vz-pulse:active { background: var(--card2); }
+.vz-pulse-h { display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
+.vz-pulse-h > b { font-size: 14.5px; font-weight: 700; }
+.vz-pulse-n { margin-left: auto; font-size: 12.5px; color: var(--tx2); font-variant-numeric: tabular-nums; }
+.vz-pulse svg { display: block; width: 100%; height: auto; overflow: visible; }
+.vz-pulse .vz-grid { stroke: var(--line); stroke-width: 1; }
+.vz-pulse .vz-axis { stroke: var(--line2); stroke-width: 1; }
+.vz-pulse .vz-ytick, .vz-pulse .vz-xtick { font-size: 9.5px; fill: var(--tx3); font-variant-numeric: tabular-nums; }
+.vz-pulse .vz-line { fill: none; stroke: var(--acc); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.vz-rise { transform-box: fill-box; transform-origin: center bottom; animation: vz-rise .7s cubic-bezier(.2, .8, .2, 1) backwards; }
+@keyframes vz-rise { from { transform: scaleY(0); } }
+.vz-peak { animation: vz-fade .4s ease-out .55s backwards; }
+.vz-peak circle { fill: #fff; stroke: var(--card); stroke-width: 2; }
+.vz-peak text { font-size: 11px; font-weight: 650; fill: var(--tx); paint-order: stroke; stroke: var(--card); stroke-width: 3px; stroke-linejoin: round; }
+.vz-now line { stroke: var(--ok); stroke-width: 1.5; }
+.vz-now text { font-size: 10px; font-weight: 700; fill: var(--ok); paint-order: stroke; stroke: var(--card); stroke-width: 3px; stroke-linejoin: round; }
+
+/* ------------------------------------------------------------------- buzz */
+.vz-cloud-card { padding: 14px 8px; overflow: hidden; }
+.vz-cloud { position: relative; width: 100%; min-height: 120px; cursor: pointer; }
+.vz-word { position: absolute; display: flex; align-items: center; justify-content: center; white-space: nowrap; line-height: 1; letter-spacing: -.2px; border-radius: 8px; animation: vz-pop .45s cubic-bezier(.2, 1.1, .35, 1) backwards; }
+.vz-word:active { background: var(--line2); transform: scale(.96); }
+
+@media (prefers-reduced-motion: reduce) {
+  .vz *, .vz *::before, .vz *::after { animation: none !important; transition: none !important; }
+}

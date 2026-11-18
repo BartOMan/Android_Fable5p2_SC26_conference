@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark, bar-less window. A dark platform theme also makes the WebView report prefers-color-scheme: dark. -->
+    <style name="Theme.SC26Atlas" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="android:colorBackground">@color/bg</item>
+        <item name="android:colorAccent">@color/accent_cyan</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <!-- Launch theme (androidx core-splashscreen); MainActivity switches to Theme.SC26Atlas via installSplashScreen(). -->
+    <style name="Theme.SC26Atlas.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/bg</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.SC26Atlas</item>
+    </style>
+</resources>

@@ -1,0 +1,5 @@
+{
+  "ok": true,
+  "message": "fetch of a bundled JSON asset works",
+  "items": [1, 2, 3]
+}

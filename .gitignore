@@ -1,0 +1,5 @@
+data/raw/
+*.pyc
+__pycache__/
+.DS_Store
+app/android/keystore/

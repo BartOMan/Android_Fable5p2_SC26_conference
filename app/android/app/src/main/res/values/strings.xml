@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SC26 Atlas</string>
+    <string name="reminder_channel_name">Session reminders</string>
+    <string name="reminder_channel_description">Alerts shortly before sessions you asked to be reminded about</string>
+</resources>
