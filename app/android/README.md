@@ -19,10 +19,10 @@ export ANDROID_SDK_ROOT=$ANDROID_HOME
 export PATH=$JAVA_HOME/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH
 cd app/android
 
-# 1. Build both APKs. The release APK is also copied to <repo>/dist/SC26-Atlas-v1.0.0.apk
+# 1. Build both APKs. The release APK is also copied to <repo>/SC26-Atlas-v1.0.0.apk
 ./gradlew assembleDebug assembleRelease
-ls -l app/build/outputs/apk/debug/app-debug.apk ../../dist/SC26-Atlas-v1.0.0.apk
-$ANDROID_HOME/build-tools/35.0.0/apksigner verify --print-certs ../../dist/SC26-Atlas-v1.0.0.apk
+ls -l app/build/outputs/apk/debug/app-debug.apk ../../SC26-Atlas-v1.0.0.apk
+$ANDROID_HOME/build-tools/35.0.0/apksigner verify --print-certs ../../SC26-Atlas-v1.0.0.apk
 
 # 2. Create the test AVD if it is missing, boot it headless, wait until Android is up
 avdmanager list avd | grep -q sc26test || echo no | avdmanager create avd -n sc26test -k "system-images;android-35;google_apis;arm64-v8a" -d pixel_8
@@ -74,7 +74,7 @@ adb emu kill
 
 | Path | Purpose |
 | --- | --- |
-| `app/build.gradle.kts` | App module: SDK levels, signing, assets from `app/web`, `dist/` copy task. |
+| `app/build.gradle.kts` | App module: SDK levels, signing, assets from `app/web`, copy of the release APK to the top of the repository. |
 | `app/src/main/AndroidManifest.xml` | Permissions, activity (`configChanges`), reminder receiver, FileProvider. |
 | `app/src/main/kotlin/.../MainActivity.kt` | WebView setup, link handling, back, insets, splash, notification taps. |
 | `app/src/main/kotlin/.../WebAssetHandler.kt` | Serves assets with MIME types. |

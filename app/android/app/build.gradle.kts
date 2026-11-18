@@ -115,6 +115,25 @@ abstract class DropWebSiblings : DefaultTask() {
     }
 }
 
+// Copies the one signed APK out of the build folder to a single target file. A plain Copy task
+// would claim its whole destination folder as output, and the destination here is the
+// repository root, which holds the project itself.
+abstract class PublishApk : DefaultTask() {
+    @get:InputDirectory
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val apkDir: DirectoryProperty
+
+    @get:OutputFile
+    abstract val target: RegularFileProperty
+
+    @TaskAction
+    fun run() {
+        val apks = apkDir.get().asFile.listFiles { f -> f.isFile && f.extension == "apk" }.orEmpty()
+        check(apks.size == 1) { "expected exactly one APK in ${apkDir.get().asFile}, found ${apks.size}" }
+        apks.single().copyTo(target.get().asFile, overwrite = true)
+    }
+}
+
 androidComponents {
     onVariants { variant ->
         val drop = tasks.register<DropWebSiblings>("drop${variant.name.replaceFirstChar(Char::uppercase)}WebSiblings") {
@@ -125,14 +144,14 @@ androidComponents {
             .toTransform(SingleArtifact.ASSETS)
     }
 
-    // After assembleRelease, copy the signed APK to <repo>/dist/SC26-Atlas-v<version>.apk.
+    // After assembleRelease, copy the signed APK to the top of the repository as
+    // SC26-Atlas-v<version>.apk, where it shows on the repository's main page.
     onVariants(selector().withBuildType("release")) { variant ->
         val apkName = "SC26-Atlas-v$appVersionName.apk"
-        tasks.register<Copy>("distReleaseApk") {
-            description = "Copies the signed release APK to <repo>/dist."
-            from(variant.artifacts.get(SingleArtifact.APK)) { include("*.apk") }
-            into(rootProject.file("../../dist"))
-            rename { apkName }
+        tasks.register<PublishApk>("distReleaseApk") {
+            description = "Copies the signed release APK to the top of the repository."
+            apkDir.set(variant.artifacts.get(SingleArtifact.APK))
+            target.set(rootProject.layout.projectDirectory.file("../../$apkName"))
         }
     }
 }

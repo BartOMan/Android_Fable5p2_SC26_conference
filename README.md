@@ -5,9 +5,20 @@ Performance Computing, Networking, Storage, and Analysis (Chicago, 15–20
 November 2026). It bundles the whole public technical program and works
 without a connection.
 
-The installable app is `dist/SC26-Atlas-v1.0.0.apk`. One APK runs on any
-Android phone or tablet with Android 8.0 or newer; it is not specific to a
-phone model.
+## Download
+
+**[Download SC26-Atlas-v1.0.0.apk](https://github.com/BartOMan/Android_Fable5p2_SC26_conference/raw/main/SC26-Atlas-v1.0.0.apk)** (3.3 MB)
+
+The same file, `SC26-Atlas-v1.0.0.apk`, is in the file list at the top of this
+repository. One APK runs on any Android phone or tablet with Android 8.0 or
+newer; it is not specific to a phone model.
+
+To install it:
+
+1. Open this page in the phone's browser, signed in to GitHub (the repository
+   is private), and tap the download link above.
+2. Open the downloaded file. Android asks once to allow installs from the
+   browser; allow it and tap Install.
 
 ## What it does
 
@@ -26,13 +37,6 @@ phone model.
 | Venue map | Floor plans of McCormick Place with every session room, what is on in each room, and walking estimates between rooms |
 | Posters | Gallery of research, student and art posters with filters |
 
-## Install on a phone
-
-1. Copy `dist/SC26-Atlas-v1.0.0.apk` to the phone (download it from this
-   repository in the phone's browser, or send it to yourself).
-2. Open the file. Android asks once to allow installs from that app
-   (browser or file manager); allow it and tap Install.
-
 ## Repository layout
 
 | Path | Contents |
@@ -43,7 +47,7 @@ phone model.
 | `app/web/tests/` | Browser tests (Playwright) |
 | `app/web/DEV_NOTES.md` | Architecture, data model and conventions of the web app |
 | `app/android/` | The Android shell (a WebView with a small native bridge) and its build files |
-| `dist/` | The built APK |
+| `SC26-Atlas-v1.0.0.apk` | The built, signed app |
 
 ## Rebuild the data
 
