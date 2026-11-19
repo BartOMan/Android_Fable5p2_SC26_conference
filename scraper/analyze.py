@@ -720,8 +720,6 @@ def main():
                     n_photo += 1
                 except Exception as e:
                     print("  photo %s unreadable: %s" % (fn, e), file=sys.stderr)
-            elif fn:
-                p["px"] = fn.rsplit(".", 1)[-1]  # known to exist online, not cached locally
         for it in items:
             fn = it.pop("_img", None)
             src = os.path.join(a.raw, "poster", fn) if fn else None
@@ -743,6 +741,10 @@ def main():
         fn = it.pop("_img", None)
         if fn and "img" not in it:
             it["ir"] = fn
+    # a photo the program site is known to have but that is not bundled: load it online
+    for p in people:
+        if p["_photo"] and not p.get("ph"):
+            p["px"] = p["_photo"].rsplit(".", 1)[-1]
     bios = {}
     for i, p in enumerate(people):
         if p["_bio"]:

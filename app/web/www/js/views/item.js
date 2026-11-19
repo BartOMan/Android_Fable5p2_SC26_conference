@@ -8,6 +8,7 @@ import {
   esc, icon, itemCard, talkRow, personRow, chip, section, fmtPill, relBadge, awardBadges, toast, lazyList, avatar,
 } from '../ui.js';
 
+const SPEAKER_FORMATS = new Set(['keynote', 'plenary', 'invited', 'award', 'panel', 'bof', 'tutorial', 'exforum', 'rth', 'early', 'students', 'community']);
 const ROLE_LABEL = { author: 'Authors', presenter: 'Presenters', chair: 'Session chairs', panelist: 'Panelists', moderator: 'Moderators', organizer: 'Organizers', alternate: 'Alternate presenters' };
 
 function peopleBlock(it) {
@@ -22,7 +23,9 @@ function peopleBlock(it) {
   for (const [role, list] of groups) {
     const LIMIT = 8;
     const row = ([p, pres]) => personRow(p, { sub: (pres && role === 'author' ? '<span class="presenting">Presenting</span> · ' : '') + esc(p.o.length ? DB.orgs[p.o[0]].n : '') });
-    h += '<div class="card list ppl"><div class="ppl-h">' + (ROLE_LABEL[role] || role) + ' <i>' + list.length + '</i></div>' +
+    // the program gives no role for talks outside paper-style formats, so do not call them authors
+    const label = role === 'author' && SPEAKER_FORMATS.has(fmtOf(it).id) ? 'Speakers' : (ROLE_LABEL[role] || role);
+    h += '<div class="card list ppl"><div class="ppl-h">' + label + ' <i>' + list.length + '</i></div>' +
       list.slice(0, LIMIT).map(row).join('') +
       (list.length > LIMIT ? '<div class="more-wrap" hidden>' + list.slice(LIMIT).map(row).join('') + '</div><button class="link more-btn" data-act="show-more">Show all ' + list.length + icon('chevD') + '</button>' : '') + '</div>';
   }

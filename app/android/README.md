@@ -4,7 +4,7 @@ Native wrapper for the offline web app in `app/web/www`. One activity, one WebVi
 The web app is packaged as APK assets and served at
 `https://appassets.androidplatform.net/assets/www/index.html`.
 
-- Package: `io.github.bartoman.sc26atlas`, version 1.0.0, minSdk 26, target/compile SDK 35
+- Package: `io.github.bartoman.sc26atlas`, version 1.0.1, minSdk 26, target/compile SDK 35
 - Toolchain: Gradle 9.9.1 (wrapper), Android Gradle Plugin 9.5.1 (built-in Kotlin 2.2.10), JDK 17
 - Libraries: androidx core 1.16.0, activity 1.10.1, webkit 1.18.0, core-splashscreen 1.2.0
 
@@ -19,10 +19,10 @@ export ANDROID_SDK_ROOT=$ANDROID_HOME
 export PATH=$JAVA_HOME/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH
 cd app/android
 
-# 1. Build both APKs. The release APK is also copied to <repo>/SC26-Atlas-v1.0.0.apk
+# 1. Build both APKs. The release APK is also copied to <repo>/SC26-Atlas-v1.0.1.apk
 ./gradlew assembleDebug assembleRelease
-ls -l app/build/outputs/apk/debug/app-debug.apk ../../SC26-Atlas-v1.0.0.apk
-$ANDROID_HOME/build-tools/35.0.0/apksigner verify --print-certs ../../SC26-Atlas-v1.0.0.apk
+ls -l app/build/outputs/apk/debug/app-debug.apk ../../SC26-Atlas-v1.0.1.apk
+$ANDROID_HOME/build-tools/35.0.0/apksigner verify --print-certs ../../SC26-Atlas-v1.0.1.apk
 
 # 2. Create the test AVD if it is missing, boot it headless, wait until Android is up
 avdmanager list avd | grep -q sc26test || echo no | avdmanager create avd -n sc26test -k "system-images;android-35;google_apis;arm64-v8a" -d pixel_8
@@ -67,7 +67,7 @@ adb emu kill
 | `scheduleReminder(id, title, text, triggerAtMs)` | Local notification at about that time. Asks for notification permission if needed (Android 13+). Same `id` replaces the earlier reminder. |
 | `cancelReminder(id)` | Removes the pending reminder and its notification. |
 | `notificationsAllowed()` | `"true"` or `"false"`. |
-| `appVersion()` | `"1.0.0"`. |
+| `appVersion()` | `"1.0.1"`. |
 | `haptic()` | Short tick. |
 
 ## Files

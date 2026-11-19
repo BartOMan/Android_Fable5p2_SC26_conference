@@ -1,0 +1,45 @@
+{
+ "layers": [
+  {
+   "id": "West1",
+   "name": "West 1",
+   "file": "https://firebasestorage.googleapis.com/v0/b/aobao-ad50f.appspot.com/o/P0b7VrLFb4YF2gTlPNMfDyNZzf32%2FWest-Level-1.svg?alt=media&token=[left out]",
+   "switchReset": false
+  }
+ ],
+ "locations": [
+  {
+   "id": "rW175abc",
+   "title": "W175abc",
+   "layer": "West1",
+   "coord": [
+    0.7302,
+    0.7743
+   ],
+   "noMarker": true,
+   "zoom": 11.0963
+  },
+  {
+   "id": "b1854",
+   "title": "Booth 1854 - Advanced Computing Center for Research and Education",
+   "layer": "west3",
+   "coord": [
+    0.4641,
+    0.0999
+   ],
+   "noMarker": true,
+   "zoom": 15.0716,
+   "link": "/organization/?inst=1420394230262763176",
+   "target": "_self",
+   "favorite_id": "org1420394230262763176"
+  }
+ ],
+ "routes": [
+  {
+   "id": "path_1",
+   "layer": "West1",
+   "element": "polyline",
+   "points": "692,121 692,138 692,142 692,153.6 692,186.9 692,190.5 692,211.3 692,219.2 692,235.7 692,244 692,252.5 692,269.2 692,277.3 692,301.7 688,348.1 688,379.6 688,411 688,455 688,494.3 694,515 694,528.5 694,545.9 694,561.4 694,561.9 694,577.2 694,586 692.8,586.4 682,590 682,618.7 682,652.6 682,660.3 682,663.9 682,675.7 682,702.1 682,709.3 682,725.1 682,754 682,773.1"
+  }
+ ]
+}

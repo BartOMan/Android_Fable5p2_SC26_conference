@@ -4,7 +4,7 @@ plugins {
     id("com.android.application")
 }
 
-val appVersionName = "1.0.0"
+val appVersionName = "1.0.1"
 val keystoreFile = rootProject.file("keystore/sc26atlas.jks")
 val webDir = rootProject.file("../web") // <repo>/app/web
 
@@ -16,7 +16,7 @@ android {
         applicationId = "io.github.bartoman.sc26atlas"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
+        versionCode = 2
         versionName = appVersionName
     }
 

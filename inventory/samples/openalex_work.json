@@ -1,0 +1,63 @@
+{
+ "id": "https://openalex.org/W4414746986",
+ "display_name": "RAPTOR: Practical Numerical Profiling of Scientific Applications",
+ "publication_year": 2025,
+ "cited_by_count": 6,
+ "doi": "https://doi.org/10.1145/3712285.3759810",
+ "authorships": [
+  {
+   "author_position": "first",
+   "author": {
+    "id": "https://openalex.org/A5119813733",
+    "display_name": "Faveo Hoerold",
+    "orcid": "https://orcid.org/0009-0007-7472-5564",
+    "observed_orcids": [
+     "https://orcid.org/0009-0007-7472-5564"
+    ]
+   },
+   "institutions": [
+    {
+     "id": "https://openalex.org/I35440088",
+     "display_name": "ETH Zurich",
+     "ror": "https://ror.org/05a28rw58",
+     "country_code": "CH",
+     "type": "education",
+     "lineage": [
+      "https://openalex.org/I2799323385",
+      "https://openalex.org/I35440088"
+     ]
+    },
+    {
+     "id": "https://openalex.org/I4210129730",
+     "display_name": "RIKEN Center for Computational Science",
+     "ror": "https://ror.org/03r519674",
+     "country_code": "JP",
+     "type": "facility",
+     "lineage": [
+      "https://openalex.org/I4210110652",
+      "https://openalex.org/I4210129730"
+     ]
+    }
+   ],
+   "countries": [
+    "CH",
+    "JP"
+   ],
+   "is_corresponding": false,
+   "raw_author_name": "Faveo Hoerold",
+   "raw_affiliation_strings": [
+    "ETH Zurich, Zurich, Switzerland and RIKEN Center for Computational Science, Kobe, Japan"
+   ],
+   "raw_orcid": "https://orcid.org/0009-0007-7472-5564",
+   "affiliations": [
+    {
+     "raw_affiliation_string": "ETH Zurich, Zurich, Switzerland and RIKEN Center for Computational Science, Kobe, Japan",
+     "institution_ids": [
+      "https://openalex.org/I35440088",
+      "https://openalex.org/I4210129730"
+     ]
+    }
+   ]
+  }
+ ]
+}

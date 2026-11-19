@@ -7,9 +7,9 @@ without a connection.
 
 ## Download
 
-**[Download SC26-Atlas-v1.0.0.apk](https://github.com/BartOMan/Android_Fable5p2_SC26_conference/raw/main/SC26-Atlas-v1.0.0.apk)** (3.3 MB)
+**[Download SC26-Atlas-v1.0.1.apk](https://github.com/BartOMan/Android_Fable5p2_SC26_conference/raw/main/SC26-Atlas-v1.0.1.apk)** (3.3 MB)
 
-The same file, `SC26-Atlas-v1.0.0.apk`, is in the file list at the top of this
+The same file, `SC26-Atlas-v1.0.1.apk`, is in the file list at the top of this
 repository. One APK runs on any Android phone or tablet with Android 8.0 or
 newer; it is not specific to a phone model.
 
@@ -47,7 +47,8 @@ To install it:
 | `app/web/tests/` | Browser tests (Playwright) |
 | `app/web/DEV_NOTES.md` | Architecture, data model and conventions of the web app |
 | `app/android/` | The Android shell (a WebView with a small native bridge) and its build files |
-| `SC26-Atlas-v1.0.0.apk` | The built, signed app |
+| `inventory/` | What the app was built from: every source, its format, and which connections came from the source or were made by the app |
+| `SC26-Atlas-v1.0.1.apk` | The built, signed app |
 
 ## Rebuild the data
 
@@ -64,6 +65,9 @@ python3 -m venv /tmp/sc26build/venv
 /tmp/sc26build/venv/bin/python -I scraper/parse.py --raw data/raw --out data/program.json
 # 4. analysis -> app/web/www/data, img and map
 /tmp/sc26build/venv/bin/python -I scraper/analyze.py --program data/program.json --raw data/raw --web app/web/www
+# 5. check the bundle against the source pages, then refresh the numbers in inventory/
+/tmp/sc26build/venv/bin/python -I scraper/verify.py --raw data/raw --web app/web/www
+/tmp/sc26build/venv/bin/python -I scraper/inventory.py --raw data/raw --program data/program.json --web app/web/www --out inventory
 ```
 
 ## Build the APK

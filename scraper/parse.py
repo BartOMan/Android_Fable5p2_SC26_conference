@@ -202,7 +202,11 @@ def parse_days(m, raw):
                 # codes on the row attribute that have no visible label yet
                 if code not in topic + rec + reg and code in m.tags:
                     {"topic": topic, "recording": rec, "registration": reg}[m.tags[code]["group"]].append(code)
-            chairs = [p for p in m.people_list(r.select_one(".speaker-td") or r, "chair")]
+            # The speaker cell holds session chairs (class "session-chair"). For a session that
+            # is a single presentation it holds that presentation's speakers, who are not chairs;
+            # they are picked up with the presentation itself.
+            listed = m.people_list(r.select_one(".speaker-td") or r, "presenter")
+            chairs = [p for p in listed if p["role"] == "chair"]
             m.sessions[sid] = {
                 "id": sid,
                 "title": clean(tnode.get_text()) if tnode else "",
@@ -561,6 +565,25 @@ def main():
     n_person_pages = parse_person_pages(m, a.raw)
     mapinfo = parse_map(m, a.raw)
 
+    # A presentation can be listed under two sessions (a poster in the display session and in
+    # the reception, a doctoral showcase talk and its poster). Detail found on one listing
+    # (abstract, preview image, video, links, people) belongs to the other listing as well.
+    by_pid = {}
+    for (sid, pid), p in m.pres.items():
+        by_pid.setdefault(pid, []).append(p)
+    shared = 0
+    for group in by_pid.values():
+        if len(group) < 2:
+            continue
+        for k in ("abstract", "image", "video", "links", "similar", "blitz", "people", "tags", "dl", "poster"):
+            best = max((g.get(k) for g in group), key=lambda v: len(v) if hasattr(v, "__len__") else int(bool(v)))
+            if not best:
+                continue
+            for g in group:
+                if not g.get(k):
+                    g[k] = best if not isinstance(best, list) else list(best)
+                    shared += 1
+
     # link presentations to sessions, inherit missing fields from the session
     orphans = 0
     for (sid, pid), p in m.pres.items():
@@ -578,8 +601,12 @@ def main():
         s["pres"].sort(key=lambda pid: (m.pres[(s["id"], pid)]["start"] or 0,
                                         m.pres[(s["id"], pid)]["end"] or 0, pid))
 
+    # "generated" is when the program pages were downloaded, which is the date the data stands for.
+    # Re-running this script later must not make the snapshot look newer than it is.
+    bulk = [os.path.join(a.raw, "day_%s.html" % d) for d in DAYS] + [os.path.join(a.raw, "page_search-program.html")]
+    fetched = max(os.path.getmtime(p) for p in bulk if os.path.exists(p))
     out = {
-        "generated": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "generated": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(fetched)),
         "source": "https://sc26.conference-program.com/",
         "types": m.types,
         "tags": m.tags,
